@@ -8,6 +8,10 @@ Nền tảng web hỗ trợ học tập thông minh: quản lý môn học/tài 
   - `src/EduAI.BusinessLogic`: Business services
   - `src/EduAI.Model`: Entities + DbContext + Migrations
 
+## Kiến trúc tổng quan
+
+![EduAI architecture](docs/images/architecture.png)
+
 ## Yêu cầu môi trường
 
 - .NET SDK **8.x**
