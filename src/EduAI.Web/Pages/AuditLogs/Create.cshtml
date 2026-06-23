@@ -1,0 +1,25 @@
+@page
+@model EduAI.Web.Pages.AuditLogs.CreateModel
+@{ ViewData["Title"] = "Tạo nhật ký"; }
+
+<h2>Tạo nhật ký</h2>
+<form method="post" class="card p-3">
+    <div class="mb-3">
+        <label asp-for="Input.Action" class="form-label"></label>
+        <input asp-for="Input.Action" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.UserId" class="form-label"></label>
+        <input asp-for="Input.UserId" class="form-control" placeholder="Để trống = quản trị viên hiện tại" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.IpAddress" class="form-label"></label>
+        <input asp-for="Input.IpAddress" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Details" class="form-label"></label>
+        <textarea asp-for="Input.Details" class="form-control" rows="4"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Tạo</button>
+    <a asp-page="Index" class="btn btn-secondary">Hủy</a>
+</form>

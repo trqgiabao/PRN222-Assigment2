@@ -1,0 +1,22 @@
+@page "{id:int}"
+@model EduAI.Web.Pages.Documents.EditModel
+@{ ViewData["Title"] = "Sửa tài liệu"; }
+
+<h2>Sửa tài liệu</h2>
+<p class="text-muted">Môn: <strong>@Model.Input.SubjectName</strong></p>
+
+<form method="post" class="card p-3">
+    <input type="hidden" asp-for="Input.Id" />
+    <input type="hidden" asp-for="Input.SubjectId" />
+    <input type="hidden" asp-for="Input.SubjectName" />
+    <div class="mb-3">
+        <label asp-for="Input.FileName" class="form-label"></label>
+        <input asp-for="Input.FileName" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.ChapterId" class="form-label">Chương</label>
+        <select asp-for="Input.ChapterId" asp-items="Model.ChapterOptions" class="form-select"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    <a asp-page="Details" asp-route-id="@Model.Input.Id" class="btn btn-secondary">Hủy</a>
+</form>

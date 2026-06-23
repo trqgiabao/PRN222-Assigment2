@@ -1,0 +1,97 @@
+@page
+@model EduAI.Web.Pages.Documents.IndexModel
+@{ ViewData["Title"] = "Tài liệu"; ViewData["RealtimeEntities"] = "Document,Chunk,Embedding"; }
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">@Model.ViewModel.SubjectName</h1>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-page="Create" asp-route-subjectId="@Model.ViewModel.SubjectId" class="btn btn-primary">+ Tải lên</a>
+        <a asp-page="/Subjects/Details" asp-route-id="@Model.ViewModel.SubjectId" class="btn btn-outline-secondary">← Môn học</a>
+    </div>
+</div>
+
+@if (Model.ViewModel.Documents.Count == 0)
+{
+    <div class="alert alert-secondary">
+        Chưa có tài liệu.
+        <a asp-page="Create" asp-route-subjectId="@Model.ViewModel.SubjectId" class="alert-link">Tải lên ngay</a>
+    </div>
+}
+else
+{
+    <div class="panel-card">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Tệp</th>
+                        <th>Chương</th>
+                        <th>Loại</th>
+                        <th>Đoạn văn</th>
+                        <th>Trạng thái</th>
+                        <th>Tải lên bởi</th>
+                        <th>Ngày</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var doc in Model.ViewModel.Documents)
+                {
+                    var isExpanded = Model.ExpandedDocumentId == doc.Id;
+                    <tr>
+                        <td><strong>@doc.FileName</strong></td>
+                        <td>@doc.ChapterName</td>
+                        <td><span class="badge badge-doc">@doc.FileType</span></td>
+                        <td>
+                            @if (doc.ChunkCount > 0)
+                            {
+                                if (isExpanded)
+                                {
+                                    <a asp-page="Index" asp-route-subjectId="@Model.ViewModel.SubjectId" class="badge badge-chunk badge-chunk-link text-decoration-none">@doc.ChunkCount ▲</a>
+                                }
+                                else
+                                {
+                                    <a asp-page="Index" asp-route-subjectId="@Model.ViewModel.SubjectId" asp-route-showChunks="@doc.Id" class="badge badge-chunk badge-chunk-link text-decoration-none">@doc.ChunkCount ▼</a>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">0</span>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge @(doc.IndexStatus == "Indexed" ? "status-indexed" : doc.IndexStatus == "Processing" ? "status-processing" : "status-pending")">@(doc.IndexStatus == "Indexed" ? "đã tải nội dung thành công" : doc.IndexStatus == "Processing" ? "Đang xử lý" : doc.IndexStatus == "Pending" ? "Chờ xử lý" : doc.IndexStatus)</span>
+                        </td>
+                        <td class="text-muted">@doc.UploadedByName</td>
+                        <td class="text-muted">@doc.CreatedAt.ToString("g")</td>
+                        <td class="text-nowrap">
+                            <a asp-page="/Study/Download" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-success">Tải</a>
+                            <a asp-page="Details" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-primary">Chi tiết</a>
+                            <a asp-page="Edit" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-secondary">Sửa</a>
+                        </td>
+                    </tr>
+                    @if (isExpanded)
+                    {
+                        <tr class="chunk-expand-row">
+                            <td colspan="8">
+                                <div class="chunk-inline-panel">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <strong>Đoạn văn — @doc.FileName (@Model.ExpandedChunks.Count)</strong>
+                                        <a asp-page="Index" asp-route-subjectId="@Model.ViewModel.SubjectId" class="btn btn-sm btn-outline-secondary">Đóng</a>
+                                    </div>
+                                    @{
+                                        var chunkAccordionId = "doc-chunks-" + doc.Id;
+                                    }
+                                    <partial name="_ChunkAccordion" model="(Model.ExpandedChunks, chunkAccordionId, Model.ShowEmbedding)" />
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

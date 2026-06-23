@@ -1,0 +1,839 @@
+Ti?ng Anh
+Hoàn toàn du?c. N?u gi?ng viên yêu c?u trình bày theo dúng 6 ph?n, thì b?n nên b? các m?c ph? nhu Contributions ra kh?i n?i dung chính và ch? t?p trung vào 6 ph?n du?i dây.
+
+AI-Assisted Semantic-Aware Framework for Microservice Boundary Identification Using Heterogeneous Software Knowledge Graphs, Graph Neural Networks, and Large Language Models
+1. Research Questions
+Background
+The migration from monolithic architectures to microservices has become a critical modernization strategy for enterprise software systems. Microservices provide scalability, fault isolation, independent deployment, and technological flexibility. However, identifying appropriate service boundaries remains one of the most challenging stages of migration.
+Most existing decomposition approaches rely primarily on structural dependencies extracted from source code. While these approaches can identify technical relationships, they often fail to capture business semantics, domain boundaries, and architectural intent. Consequently, generated microservices may exhibit poor business alignment and evolve into distributed monoliths.
+Recent advances in Artificial Intelligence provide new opportunities for addressing these limitations. Graph Neural Networks (GNNs) can learn structural patterns from software dependency graphs, while Large Language Models (LLMs) can understand semantic information embedded in source code, documentation, comments, and naming conventions.
+Therefore, this research proposes an AI-assisted semantic-aware framework that integrates structural intelligence and semantic intelligence to improve microservice boundary identification.
+Supporting References
+?Hassan et al. (2024) – Monolithic to Microservice Migration
+https://www.researchgate.net/publication/385377208_Migrating_from_Monolithic_to_Microservice_Architectures_A_Systematic_Literature_Review
+?Lewis & Fowler (2014) – Microservices Architecture
+https://martinfowler.com/articles/microservices.html
+Research Questions
+RQ1
+How can Graph Neural Networks improve structural microservice boundary identification compared with traditional clustering-based decomposition techniques?
+RQ2
+To what extent can Large Language Models improve semantic consistency and business-domain alignment during microservice boundary identification?
+RQ3
+Does a hybrid framework combining GNNs and LLMs produce higher-quality microservice decompositions than conventional structural-only approaches?
+
+2. Literature Review
+2.1 Monolithic to Microservice Migration
+Microservice architecture decomposes software systems into independently deployable and loosely coupled services. This architectural style improves scalability, maintainability, and deployment flexibility.
+However, migration from monolithic systems remains difficult because legacy applications often contain tightly coupled modules, shared databases, and undocumented business rules.
+References
+?Hassan et al. (2024)
+https://www.researchgate.net/publication/385377208_Migrating_from_Monolithic_to_Microservice_Architectures_A_Systematic_Literature_Review
+?Dragoni et al. (2017)
+https://arxiv.org/abs/1704.04173
+
+2.2 Traditional Service Boundary Identification
+Traditional decomposition approaches rely on structural information such as:
+?Method call dependencies
+?Package dependencies
+?Shared database access
+?Evolutionary coupling
+Common decomposition algorithms include:
+?K-Means
+?Hierarchical Clustering
+?DBSCAN
+?Louvain Community Detection
+Although effective for structural analysis, these approaches generally fail to capture business semantics and domain knowledge.
+References
+?Mazlami et al. (2017)
+https://ieeexplore.ieee.org/document/7927915
+?Levcovitz et al. (2016)
+https://ieeexplore.ieee.org/document/7774526
+
+2.3 Heterogeneous Software Knowledge Graphs
+Software systems generate heterogeneous information from source code, runtime interactions, database schemas, and software evolution history.
+Knowledge Graphs provide a unified representation capable of integrating these diverse artifacts into a single graph structure.
+Reference
+?Hogan et al. (2021)
+https://dl.acm.org/doi/10.1145/3447772
+
+2.4 Graph Neural Networks in Software Engineering
+Software systems can naturally be represented as graphs.
+Graph Neural Networks learn structural representations from software entities and their relationships while preserving software topology and dependency patterns.
+References
+?Kipf & Welling (2017) – GCN
+https://arxiv.org/abs/1609.02907
+?Velickovic et al. (2018) – GAT
+https://openreview.net/forum?id=rJXMpikCZ
+?Schlichtkrull et al. (2018) – R-GCN
+https://arxiv.org/abs/1703.06103
+
+2.5 Large Language Models in Software Engineering
+Large Language Models have demonstrated strong performance in:
+?Code Understanding
+?Program Analysis
+?Documentation Generation
+?Software Maintenance
+LLMs can infer business-domain semantics from source code artifacts and help align technical boundaries with business boundaries.
+References
+?Hou et al. (2024)
+https://arxiv.org/abs/2308.10620
+?Fan et al. (2023)
+https://arxiv.org/abs/2312.11470
+
+2.6 Research Gap
+Gap 1
+Limited integration of structural intelligence and semantic intelligence.
+Gap 2
+Lack of multi-source software knowledge representation.
+Gap 3
+Insufficient business-domain validation for generated microservices.
+To address these limitations, this research proposes a framework combining Heterogeneous Software Knowledge Graphs, Graph Neural Networks, and Large Language Models.
+
+3. Hypotheses
+H1
+Graph Neural Network-based decomposition is expected to improve cohesion and reduce coupling by learning richer software dependency representations than traditional clustering-based decomposition techniques.
+H2
+Large Language Model-assisted semantic validation is expected to improve business-domain alignment and semantic consistency of generated microservice boundaries.
+H3
+The proposed hybrid GNN–LLM framework is expected to achieve superior structural, semantic, and business-oriented decomposition quality compared with traditional structural-only approaches.
+Supporting References
+?Kipf & Welling (2017)
+?Schlichtkrull et al. (2018)
+?Hou et al. (2024)
+?Hassan et al. (2024)
+
+4. Methodology
+This research adopts the Design Science Research (DSR) methodology.
+Phase 1: Multi-Source Data Extraction
+Static Analysis
+?Source Code
+?AST Structures
+?Class Dependencies
+?Database Schemas
+Dynamic Analysis
+?Runtime Execution Traces
+?API Call Graphs
+?Transaction Flows
+using OpenTelemetry.
+Evolutionary Analysis
+?Git Commit History
+?Refactoring Records
+?Co-change Relationships
+
+Phase 2: Heterogeneous Software Knowledge Graph Construction
+Node Types
+?Class
+?Method
+?Package
+?Database Table
+?API Endpoint
+Edge Types
+?Method Call
+?Inheritance
+?Data Access
+?Package Containment
+?Runtime Invocation
+?Evolutionary Co-Change
+
+Phase 3: Semantic Feature Initialization Using LLMs
+Input:
+?Class Names
+?Method Names
+?Comments
+?Documentation
+Output:
+?Semantic Embeddings
+
+Phase 4: Structural Representation Learning Using GNNs
+Candidate Models:
+?GCN
+?GAT
+?R-GCN
+Community Detection:
+?Louvain
+?Leiden
+?Spectral Clustering
+
+Phase 5: LLM-Based Domain Validation
+The LLM validates:
+?Semantic Consistency
+?Domain Alignment
+?Boundary Violations
+according to Domain-Driven Design principles.
+
+Phase 6: Evaluation
+Structural Metrics
+?Cohesion
+?Coupling
+?ICP
+?NED
+?Modularity
+Semantic Metrics
+?Precision
+?Recall
+?F1-Score
+Business Metrics
+?Domain Alignment Score
+?DDD Consistency Score
+
+5. Data Sources
+Benchmark Systems
+System	Domain	LOC
+Spring PetClinic	Healthcare	~12,000
+JPetStore	E-Commerce	~15,000
+DayTrader	Finance	~20,000
+CargoTracker	Logistics	~28,000
+Broadleaf Commerce	Enterprise E-Commerce	50,000+
+Repository Sources
+Spring PetClinic
+https://github.com/spring-projects/spring-petclinic
+JPetStore
+https://github.com/mybatis/jpetstore-6
+DayTrader
+https://github.com/OpenLiberty/sample.daytrader8
+CargoTracker
+https://github.com/eclipse-ee4j/cargotracker
+Broadleaf Commerce
+https://github.com/BroadleafCommerce/BroadleafCommerce
+Additional Sources
+Git History
+https://git-scm.com/
+OpenTelemetry
+https://opentelemetry.io/
+
+6. Expected Results
+For RQ1, the proposed framework is expected to improve structural decomposition quality by generating microservices with higher cohesion, lower coupling, and improved modularity compared with traditional clustering-based techniques.
+For RQ2, the integration of LLM-based semantic analysis is expected to improve semantic consistency, reduce cross-domain overlap, and enhance business-domain alignment.
+For RQ3, the hybrid framework combining Heterogeneous Software Knowledge Graphs, Graph Neural Networks, and Large Language Models is expected to outperform structural-only approaches across structural, semantic, and business-oriented evaluation metrics.
+Overall, the research is expected to demonstrate that integrating structural intelligence and semantic intelligence can produce more meaningful, maintainable, and domain-aligned microservice boundaries, thereby supporting more effective migration from monolithic systems to microservice architectures.
+
+
+
+Ti?ng Vi?t
+N?u b?n mu?n dúng c?u trúc 6 ph?n c?a proposal nghiên c?u (Research Questions ? Literature Review ? Hypotheses ? Methodology ? Data Sources ? Expected Results) thì có th? trình bày b?ng b?ng ti?ng Vi?t nhu sau:
+Thành ph?n	N?i dung
+1. Câu h?i nghiên c?u (Research Questions)	RQ1: GNN có th? c?i thi?n vi?c xác d?nh ranh gi?i Microservice d?a trên c?u trúc h? th?ng t?t hon các phuong pháp phân c?m truy?n th?ng hay không?RQ2: LLM có th? c?i thi?n tính nh?t quán ng? nghia và s? phù h?p v?i mi?n nghi?p v? khi xác d?nh ranh gi?i Microservice hay không?RQ3: Framework k?t h?p GNN và LLM có t?o ra k?t qu? phân tách Microservice t?t hon các phuong pháp ch? d?a trên c?u trúc hay không?
+2. T?ng quan tài li?u (Literature Review)	Nghiên c?u v? chuy?n d?i Monolithic sang Microservices cho th?y bài toán khó nh?t là xác d?nh ranh gi?i d?ch v? (Service Boundary Identification). Các phuong pháp hi?n t?i ch? y?u d?a trên phân tích c?u trúc (Static Analysis, Dynamic Analysis, Clustering) nhung chua khai thác d?y d? ng? nghia nghi?p v?. GNN cho phép h?c c?u trúc h? th?ng du?i d?ng d? th?, trong khi LLM có kh? nang hi?u ý nghia c?a mã ngu?n, tài li?u và comment. Tuy nhiên chua có nhi?u nghiên c?u k?t h?p c? hai trong m?t framework hoàn ch?nh.
+3. Gi? thuy?t nghiên c?u (Hypotheses)	H1: GNN t?o ra các Microservice có d? k?t dính (Cohesion) cao hon và d? ph? thu?c (Coupling) th?p hon các thu?t toán phân c?m truy?n th?ng.H2: LLM giúp c?i thi?n m?c d? phù h?p gi?a Microservice và mi?n nghi?p v? (Business Domain Alignment).H3: Framework k?t h?p GNN và LLM cho ch?t lu?ng phân tách Microservice t?t hon các phuong pháp truy?n th?ng.
+4. Phuong pháp nghiên c?u (Methodology)	Áp d?ng phuong pháp Design Science Research (DSR) g?m 6 giai do?n:Phase 1: Thu th?p d? li?u t? Source Code, Runtime Traces và Git History.Phase 2: Xây d?ng Heterogeneous Software Knowledge Graph (HSKG).Phase 3: S? d?ng LLM d? t?o Semantic Embedding cho các th?c th? ph?n m?m.Phase 4: Áp d?ng R-GCN/GNN d? h?c bi?u di?n d? th? và xác d?nh c?m Microservice.Phase 5: S? d?ng LLM d? ki?m tra tính phù h?p v?i Domain-Driven Design (DDD).Phase 6: Ðánh giá k?t qu? b?ng các ch? s? ki?n trúc và ng? nghia.
+5. Ngu?n d? li?u (Data Sources)	H? th?ng th?c nghi?m: Spring PetClinic, JPetStore, DayTrader, CargoTracker, Broadleaf Commerce.Static Data: Source Code, AST, Dependency Graph, Database Schema.Dynamic Data: Runtime Traces, API Call Graph, Transaction Flow.Evolutionary Data: Git Commit History, Refactoring Records, Bug Fix History.
+6. K?t qu? k? v?ng (Expected Results)	RQ1: Tang 10–20% Cohesion và gi?m 15–25% Coupling so v?i các thu?t toán phân c?m truy?n th?ng.
+RQ2: C?i thi?n Semantic Consistency, Domain Alignment và gi?m ch?ng chéo gi?a các mi?n nghi?p v?
+.RQ3: T?o ra ki?n trúc Microservice có ch?t lu?ng cao hon, d? ph?c t?p th?p hon và tuân th? t?t hon các nguyên t?c Domain-Driven Design (DDD).
+Tóm t?t d? tài trong 1 câu
+Ð? tài d? xu?t m?t framework k?t h?p Heterogeneous Software Knowledge Graph (HSKG), Relational Graph Convolutional Network (R-GCN) và Large Language Models (LLM) nh?m xác d?nh ranh gi?i Microservice chính xác hon b?ng cách khai thác d?ng th?i c?u trúc ph?n m?m, d? li?u th?c thi và ng? nghia nghi?p v? trong quá trình chuy?n d?i t? Monolithic sang Microservices.
+
+Thành ph?n	Gi?i thích
+HSKG (Heterogeneous Software Knowledge Graph)	Dùng d? bi?u di?n h? th?ng Monolithic thành m?t d? th?, trong dó các Class, Method, Package và Database du?c bi?u di?n du?i d?ng các nút và m?i quan h?.
+R-GCN (Relational Graph Convolutional Network)	H?c các m?i quan h? gi?a các thành ph?n trong d? th? và trích xu?t d?c trung c?u trúc c?a h? th?ng.
+LLM (Large Language Model)	Hi?u ý nghia nghi?p v? t? mã ngu?n, tên class, tên method, comment và tài li?u ph?n m?m.
+K?t h?p HSKG + R-GCN + LLM	K?t h?p phân tích c?u trúc và phân tích ng? nghia d? xác d?nh ranh gi?i Microservice chính xác hon các phuong pháp truy?n th?ng.
+
+Component	Description
+HSKG (Heterogeneous Software Knowledge Graph)	Represents a monolithic system as a graph where Classes, Methods, Packages, and Databases are modeled as nodes and relationships.
+R-GCN (Relational Graph Convolutional Network)	Learns relationships among software components in the graph and extracts structural features of the system.
+LLM (Large Language Model)	Understands business semantics from source code, class names, method names, comments, and software documentation.
+HSKG + R-GCN + LLM Integration	Combines structural analysis and semantic understanding to identify microservice boundaries more accurately than traditional approaches.
+
+
+So snansh c?i ti?n gì hon so v?i pp cu
+Ði?m c?i ti?n c?a nghiên c?u d? xu?t so v?i Hassan (2024)
+Nghiên c?u c?a Hassan (2024) v?i tiêu d? “Migrating from Monolithic to Microservice Architectures: A Systematic Literature Review” là m?t công trình t?ng quan h? th?ng có giá tr? trong vi?c phân tích các phuong pháp chuy?n d?i t? ki?n trúc nguyên kh?i (Monolithic Architecture) sang ki?n trúc vi d?ch v? (Microservice Architecture). Thông qua vi?c kh?o sát các nghiên c?u tru?c dó, tác gi? dã ch? ra r?ng vi?c xác d?nh ranh gi?i microservice v?n là m?t trong nh?ng thách th?c l?n nh?t trong quá trình chuy?n d?i h? th?ng. M?c dù nhi?u phuong pháp dã du?c d? xu?t, ph?n l?n v?n d?a trên phân tích c?u trúc ph?n m?m nhu dependency graph, call graph ho?c package relationship và s? d?ng các thu?t toán phân c?m truy?n th?ng nhu K-Means, Hierarchical Clustering, DBSCAN hay Louvain Community Detection d? t?o ra các c?m d?ch v? ?ng viên. Tuy nhiên, các phuong pháp này ch? y?u t?p trung vào vi?c phân tích m?i quan h? k? thu?t gi?a các thành ph?n ph?n m?m mà chua ph?n ánh d?y d? ý nghia nghi?p v? cung nhu ranh gi?i mi?n (domain boundaries) c?a h? th?ng.
+D?a trên các kho?ng tr?ng nghiên c?u du?c Hassan (2024) xác d?nh, d? tài này d? xu?t m?t framework m?i mang tên( AI-Assisted Semantic-Aware Framework for Microservice Boundary Identification Using Heterogeneous Software Knowledge Graphs, Graph Neural Networks, and Large Language Models) nh?m nâng cao ch?t lu?ng xác d?nh ranh gi?i microservice. Ði?m c?i ti?n d?u tiên c?a nghiên c?u là s? chuy?n d?i t? cách ti?p c?n ch? d?a trên thông tin c?u trúc sang cách ti?p c?n k?t h?p gi?a thông tin c?u trúc và thông tin ng? nghia.
++ Trong các nghiên c?u truy?n th?ng, h? th?ng ch? bi?t du?c thành ph?n nào g?i thành ph?n nào ho?c thành ph?n nào ph? thu?c vào thành ph?n nào. Ði?u này giúp phát hi?n các quan h? k? thu?t nhung không cho bi?t các thành ph?n dó thu?c mi?n nghi?p v? nào. Ví d?, các l?p nhu OrderService, CustomerService và PaymentService có th? có m?c d? ph? thu?c k? thu?t cao và b? gom vào cùng m?t c?m b?i các thu?t toán phân c?m.
++ Tuy nhiên, xét du?i góc d? nghi?p v?, chúng l?i d?i di?n cho các mi?n khác nhau nhu qu?n lý don hàng, qu?n lý khách hàng và thanh toán. Ð? kh?c ph?c h?n ch? này, nghiên c?u d? xu?t s? d?ng Large Language Models (LLMs) d? phân tích tên l?p, tên phuong th?c, comment, tài li?u k? thu?t và tài li?u nghi?p v? nh?m sinh ra các semantic embeddings ph?n ánh ng? c?nh nghi?p v? c?a t?ng thành ph?n ph?n m?m. Nh? dó, framework không ch? hi?u cách các thành ph?n tuong tác v?i nhau mà còn hi?u lý do t?n t?i và vai trò nghi?p v? c?a chúng, t? dó t?o ra các microservice phù h?p hon v?i nguyên t?c Domain-Driven Design.
++ Ði?m c?i ti?n th? hai là m? r?ng ph?m vi d? li?u d?u vào t? ngu?n don l? sang mô hình tri th?c da ngu?n. Hassan (2024) ch? ra r?ng ph?n l?n các nghiên c?u hi?n t?i ch? y?u d?a trên mã ngu?n tinh (source code) d? th?c hi?n phân tích. Tuy nhiên, mã ngu?n ch? ph?n ánh m?t ph?n c?a h? th?ng và không th? hi?n d?y d? cách h? th?ng v?n hành trong th?c t? ho?c quá trình ti?n hóa c?a h? th?ng theo th?i gian. Ð? gi?i quy?t h?n ch? này, nghiên c?u d? xu?t tích h?p d?ng th?i ba lo?i d? li?u g?m d? li?u tinh, d? li?u d?ng và d? li?u ti?n hóa. D? li?u tinh bao g?m source code, Abstract Syntax Trees (AST) và database schema. D? li?u d?ng bao g?m runtime execution traces, API invocation logs và transaction flows du?c thu th?p thông qua OpenTelemetry. D? li?u ti?n hóa bao g?m l?ch s? commit Git, các ho?t d?ng refactoring, bug-fix history và các m?i quan h? co-change gi?a các thành ph?n ph?n m?m. Vi?c k?t h?p nhi?u ngu?n d? li?u giúp framework có du?c góc nhìn toàn di?n hon v? h? th?ng, d?ng th?i phát hi?n các m?i quan h? ti?m ?n mà phân tích source code don thu?n không th? nh?n ra.
++Ði?m c?i ti?n th? ba là vi?c xây d?ng Heterogeneous Software Knowledge Graph (HSKG) thay cho các d?ng dependency graph truy?n th?ng. Trong các nghiên c?u du?c Hassan (2024) kh?o sát, ph?n l?n d? th? ph?n m?m ch? bao g?m m?t lo?i nút và m?t lo?i quan h?, d?n d?n kh? nang bi?u di?n tri th?c còn h?n ch?. Ngu?c l?i, nghiên c?u d? xu?t xây d?ng m?t d? th? tri th?c ph?n m?m không d?ng nh?t, trong dó các nút có th? d?i di?n cho l?p, phuong th?c, package, b?ng d? li?u ho?c API endpoint, còn các c?nh bi?u di?n nhi?u lo?i quan h? khác nhau nhu method call, inheritance, data access, runtime invocation và evolutionary co-change. Vi?c s? d?ng HSKG giúp bi?u di?n du?c nhi?u lo?i tri th?c ph?n m?m trong cùng m?t mô hình th?ng nh?t, t? dó t?o n?n t?ng d? li?u phong phú hon cho các mô hình h?c máy trên d? th?.
++Ði?m c?i ti?n th? tu là thay th? các thu?t toán phân c?m truy?n th?ng b?ng Graph Neural Networks. Các phuong pháp nhu K-Means, DBSCAN ho?c Louvain ph? thu?c nhi?u vào các d?c trung du?c thi?t k? th? công và không có kh? nang t? h?c các bi?u di?n ph?c t?p t? d? li?u. Nghiên c?u d? xu?t áp d?ng các mô hình Graph Neural Networks nhu Graph Convolutional Networks (GCN), Graph Attention Networks (GAT) và Relational Graph Convolutional Networks (R-GCN) d? h?c tr?c ti?p bi?u di?n c?a các thành ph?n ph?n m?m t? HSKG. Nh? kh? nang lan truy?n và t?ng h?p thông tin trên nhi?u bu?c c?a d? th?, GNN có th? phát hi?n các quan h? ti?m ?n, các m?u ph? thu?c ph?c t?p và các c?u trúc mi?n mà các thu?t toán phân c?m truy?n th?ng khó nh?n bi?t. Ði?u này k? v?ng s? giúp c?i thi?n dáng k? các ch? s? cohesion và coupling c?a các microservice du?c sinh ra.
+Ði?m c?i ti?n th? nam là b? sung m?t l?p dánh giá mi?n nghi?p v? t? d?ng d?a trên Large Language Models. Hassan (2024) ch? ra r?ng h?u h?t các nghiên c?u hi?n nay ch? d?ng l?i ? bu?c t?o c?m d?ch v? mà không dánh giá xem các c?m dó có th?c s? phù h?p v?i mi?n nghi?p v? hay không. Ði?u này d?n d?n nguy co t?o ra các microservice dúng v? m?t k? thu?t nhung không phù h?p v?i cách t? ch?c nghi?p v? c?a h? th?ng. Ð? gi?i quy?t v?n d? này, nghiên c?u s? d?ng LLM nhu m?t Architectural Reasoning Agent có kh? nang dánh giá tính nh?t quán ng? nghia c?a t?ng d?ch v?, phát hi?n các vi ph?m ranh gi?i mi?n, d? xu?t di?u ch?nh c?u trúc d?ch v?, sinh mô t? ch?c nang và ki?m tra m?c d? tuân th? các nguyên t?c c?a Domain-Driven Design. Ðây là m?t bu?c c?i ti?n quan tr?ng giúp dua y?u t? nghi?p v? vào quá trình xác d?nh microservice m?t cách t? d?ng.
+Cu?i cùng, di?m c?i ti?n l?n nh?t c?a nghiên c?u là xây d?ng m?t framework AI lai hoàn ch?nh thay vì s? d?ng riêng l? t?ng k? thu?t. Trong khi các phuong pháp truy?n th?ng thu?ng ch? th?c hi?n quy trình “Structural Analysis ? Clustering ? K?t qu?”, framework d? xu?t th?c hi?n quy trình nhi?u giai do?n g?m thu th?p d? li?u da ngu?n, xây d?ng Heterogeneous Software Knowledge Graph, sinh semantic embeddings b?ng LLM, h?c bi?u di?n b?ng Graph Neural Networks, th?c hi?n community detection và cu?i cùng là dánh giá mi?n nghi?p v? b?ng LLM. S? k?t h?p này cho phép khai thác d?ng th?i s?c m?nh c?a Structural Intelligence t? GNN, Semantic Intelligence t? LLM và ki?n th?c ki?n trúc ph?n m?m t? Domain-Driven Design trong cùng m?t pipeline th?ng nh?t.
+Tóm l?i, di?m m?i c?t lõi c?a nghiên c?u không n?m ? vi?c s? d?ng riêng l? Graph Neural Networks hay Large Language Models, mà n?m ? vi?c xây d?ng m?t framework tích h?p HSKG–GNN–LLM nh?m gi?i quy?t tr?c ti?p ba kho?ng tr?ng nghiên c?u quan tr?ng mà Hassan (2024) dã ch? ra, bao g?m: thi?u s? k?t h?p gi?a phân tích c?u trúc và phân tích ng? nghia, thi?u co ch? bi?u di?n tri th?c ph?n m?m da ngu?n và thi?u phuong pháp dánh giá s? phù h?p v?i mi?n nghi?p v?. Thông qua các c?i ti?n này, nghiên c?u k? v?ng s? t?o ra các microservice có ch?t lu?ng cao hon, phù h?p hon v?i Domain-Driven Design và h? tr? hi?u qu? quá trình hi?n d?i hóa các h? th?ng ph?n m?m nguyên kh?i.
+
+
+Ngu?n tham kh?o
+
+
+1. Research Questions
+N?i dung
+?Monolithic ? Microservices migration
+?Service Boundary Identification
+?H?n ch? c?a structural-only approaches
+?Vai trò c?a GNN và LLM
+Ngu?n chính
+Hassan (2024)
+Ngu?n:
+https://www.researchgate.net/publication/385377208_Migrating_from_Monolithic_to_Microservice_Architectures_A_Systematic_Literature_Review
+Dùng d? ch?ng minh:
+?Migration sang Microservices là xu hu?ng hi?n nay.
+?Service boundary identification là thách th?c l?n.
+?Các nghiên c?u hi?n t?i ch? y?u d?a trên structural analysis.
+?Thi?u semantic analysis.
+?Thi?u business-domain validation.
+Deep Learning for Source Code Modeling" (Alon et al.) 
+A Survey of Graph Neural Networks for Software Engineering 
+Lewis & Fowler (2014)
+Ngu?n:
+https://martinfowler.com/articles/microservices.html
+Dùng d? ch?ng minh:
+?Ð?nh nghia Microservice Architecture.
+?L?i ích c?a Microservices.
+
+2. Literature Review
+2.1 Monolithic to Microservice Migration
+Hassan (2024)
+Ngu?n:
+https://www.researchgate.net/publication/385377208_Migrating_from_Monolithic_to_Microservice_Architectures_A_Systematic_Literature_Review
+Dragoni et al. (2017)
+Ngu?n:
+https://arxiv.org/abs/1704.04173
+Dùng cho:
+?T?ng quan Microservice Architecture.
+?Migration challenges.
+
+2.2 Traditional Service Boundary Identification
+Mazlami et al. (2017)
+Ngu?n:
+https://ieeexplore.ieee.org/document/7927915
+Dùng cho:
+?Clustering-based decomposition.
+?Service extraction.
+Levcovitz et al. (2016)
+Ngu?n:
+https://ieeexplore.ieee.org/document/7774526
+Dùng cho:
+?Service decomposition metrics.
+
+2.3 Graph Neural Networks in Software Engineering
+Kipf & Welling (2017)
+Ngu?n:
+https://arxiv.org/abs/1609.02907
+Dùng cho:
+?Graph Convolutional Network.
+Velickovic et al. (2018)
+Ngu?n:
+https://openreview.net/forum?id=rJXMpikCZ
+Dùng cho:
+?Graph Attention Network.
+Schlichtkrull et al. (2018)
+Ngu?n:
+https://arxiv.org/abs/1703.06103
+Dùng cho:
+?Relational Graph Convolutional Networks.
+
+2.4 Large Language Models in Software Engineering
+Hou et al. (2024)
+Ngu?n:
+https://arxiv.org/abs/2308.10620
+Dùng cho:
+?LLMs for Software Engineering.
+Fan et al. (2023)
+Ngu?n:
+https://arxiv.org/abs/2312.11470
+Dùng cho:
+?Code understanding.
+?Program analysis.
+
+2.5 Research Gap
+Hassan (2024)
+Ngu?n:
+https://www.researchgate.net/publication/385377208_Migrating_from_Monolithic_to_Microservice_Architectures_A_Systematic_Literature_Review
+Trích cho:
+Gap 1:
+Structural vs Semantic
+Gap 2:
+Multi-source representation
+Gap 3:
+Business-domain validation
+
+3. Hypotheses
+H1
+GNN improves cohesion and coupling.
+Ngu?n:
+Kipf & Welling (2017)
+https://arxiv.org/abs/1609.02907
+Schlichtkrull et al. (2018)
+https://arxiv.org/abs/1703.06103
+
+H2
+LLM improves semantic consistency.
+Ngu?n:
+Hou et al. (2024)
+https://arxiv.org/abs/2308.10620
+
+H3
+Hybrid AI framework outperforms structural-only methods.
+Ngu?n:
+Hassan (2024)
+https://www.researchgate.net/publication/385377208_Migrating_from_Monolithic_to_Microservice_Architectures_A_Systematic_Literature_Review
+và
+Hou et al. (2024)
+https://arxiv.org/abs/2308.10620
+
+4. Methodology
+Design Science Research
+Peffers et al. (2007)
+Ngu?n:
+https://aisel.aisnet.org/cgi/viewcontent.cgi?article=1024&context=cais
+Dùng d? ch?ng minh:
+?Design Science Research Methodology.
+
+Heterogeneous Software Knowledge Graph
+Hogan et al. (2021)
+Ngu?n:
+https://dl.acm.org/doi/10.1145/3447772
+Dùng cho:
+?Knowledge Graph.
+
+OpenTelemetry
+Ngu?n:
+https://opentelemetry.io/docs/
+Dùng cho:
+?Runtime trace collection.
+
+GNN
+Kipf & Welling (2017)
+https://arxiv.org/abs/1609.02907
+Velickovic et al. (2018)
+https://openreview.net/forum?id=rJXMpikCZ
+Schlichtkrull et al. (2018)
+https://arxiv.org/abs/1703.06103
+
+Domain-Driven Design
+Eric Evans (2003)
+https://www.domainlanguage.com/ddd/
+Dùng cho:
+?Bounded Context.
+?Domain Alignment.
+
+5. Data Sources
+Spring PetClinic
+https://github.com/spring-projects/spring-petclinic
+
+JPetStore
+https://github.com/mybatis/jpetstore-6
+
+DayTrader
+https://github.com/OpenLiberty/sample.daytrader8
+
+CargoTracker
+https://github.com/eclipse-ee4j/cargotracker
+
+Broadleaf Commerce
+https://github.com/BroadleafCommerce/BroadleafCommerce
+
+Git Data
+https://git-scm.com/
+
+OpenTelemetry
+https://opentelemetry.io/
+
+6. Expected Results
+Structural Quality
+Ngu?n:
+Mazlami et al. (2017)
+https://ieeexplore.ieee.org/document/7927915
+Levcovitz et al. (2016)
+https://ieeexplore.ieee.org/document/7774526
+Ch?ng minh:
+?Cohesion
+?Coupling
+?Service quality metrics
+
+Semantic Quality
+Ngu?n:
+Evans (2003)
+https://www.domainlanguage.com/ddd/
+Hou et al. (2024)
+https://arxiv.org/abs/2308.10620
+Ch?ng minh:
+?Business-domain alignment
+?Semantic consistency
+
+Overall Quality
+Ngu?n:
+Hassan (2024)
+https://www.researchgate.net/publication/385377208_Migrating_from_Monolithic_to_Microservice_Architectures_A_Systematic_Literature_Review
+Hogan et al. (2021)
+https://dl.acm.org/doi/10.1145/3447772
+Ch?ng minh:
+?Multi-source analysis improves architecture understanding.
+?Hybrid AI frameworks can address current decomposition limitations.
+
+N?u dây là proposal n?p cho gi?ng viên, tôi khuyên ph?n References nên có kho?ng 15–20 tài li?u, trong dó:
+?1–2 bài v? Microservice Migration (Hassan, Dragoni).
+?3 bài v? GNN (GCN, GAT, R-GCN).
+?2–3 bài v? LLM for Software Engineering.
+?1 bài v? Knowledge Graph.
+?1 tài li?u v? DDD.
+?1 tài li?u v? DSR.
+?5 benchmark systems (PetClinic, JPetStore, DayTrader, CargoTracker, Broadleaf).
+?2 bài v? Service Decomposition Metrics.
+Ðây là m?c tài li?u tham kh?o khá t?t cho m?t d? cuong khóa lu?n ho?c nghiên c?u d?nh hu?ng công b?.
+Ngu?n g?c c?a t?ng thành ph?n
+Thành ph?n trong d? tài	Ngu?n nghiên c?u chính
+Monolithic ? Microservices Migration	Migrating from Monolithic to Microservice Architectures: A Systematic Literature Review
+Service Boundary Identification	Microservices Patterns, Building Microservices
+Domain-Driven Design (DDD)	Domain-Driven Design
+Software Knowledge Graph	Các nghiên c?u Software Knowledge Graph và Code Knowledge Graph trong Software Engineering
+Graph Neural Networks for Software Systems	Các nghiên c?u GNN áp d?ng cho code analysis, dependency prediction và software architecture recovery
+Large Language Models for Code Understanding	GPT-4 Technical Report và các nghiên c?u Code LLM
+Hybrid Structural + Semantic Analysis	Là ph?n b?n k?t h?p t? nhi?u hu?ng nghiên c?u khác nhau
+
+C? th? bài c?a b?n k? th?a t? Hassan (2024) nhu th? nào?
+T? bài SLR c?a Hassan:
+Hassan ch? ra
+?Service Decomposition là ch? d? du?c nghiên c?u nhi?u nh?t.
+?Chua có phuong pháp th?ng nh?t.
+?Thi?u semantic understanding.
+?Thi?u automation.
+?Thi?u end-to-end framework.
+Ðó chính là research gap c?a b?n.
+B?n dang tr? l?i tr?c ti?p:
+Research Gap Hassan 2024	Gi?i pháp c?a d? tài
+Structural-only decomposition	GNN
+Lack of semantic understanding	LLM
+Fragmented migration techniques	HSKG Framework
+Lack of business-domain validation	LLM + DDD Validation
+Limited integration of data sources	HSKG
+
+Ph?n HSKG l?y c?m h?ng t? dâu?
+HSKG không ph?i t? nhiên xu?t hi?n.
+Nó k? th?a t? hu?ng nghiên c?u:
+?Knowledge Graph
+?Software Knowledge Graph
+?Code Knowledge Graph
+Ý tu?ng:
+1.Class
+2.Method
+3.Package
+4.Database
+5.API
+
+du?c mô hình hóa thành:
+6.Node
+7.Edge
+8.Relationship
+
+gi?ng cách Knowledge Graph du?c dùng trong:
+?Software Architecture Recovery
+?Program Analysis
+?Software Repository Mining
+
+Ph?n GNN l?y t? dâu?
+T? hu?ng nghiên c?u:
+Graph Neural Networks in Software Engineering
+Các bài n?i ti?ng thu?ng dùng:
+?GCN (Graph Convolutional Network)
+?GAT (Graph Attention Network)
+?R-GCN (Relational Graph Convolutional Network)
+cho:
+?Bug Prediction
+?Code Classification
+?Software Dependency Analysis
+?Architecture Recovery
+B?n dang m? r?ng:
+9.Bug Prediction
+10.   ?
+11.Microservice Boundary Identification
+
+
+Ph?n LLM l?y t? dâu?
+T? làn sóng nghiên c?u sau GPT-4:
+?Code Understanding
+?Code Summarization
+?Repository Understanding
+?Architecture Documentation
+Ví d?:
+?GPT-4
+?CodeLlama
+?StarCoder
+?DeepSeek-Coder
+Ý tu?ng:
+12.Class Name
+13.Method Name
+14.Comment
+15.Documentation
+
+?
+16.Business Domain Understanding
+
+
+N?u vi?t trong Literature Review
+B?n có th? thêm do?n này:
+The proposed framework is built upon three major research streams. First, it extends the findings of Hassan et al. (2024), which identified service decomposition as the most critical challenge in monolithic-to-microservice migration. Second, it leverages advances in Graph Neural Networks for software structure analysis, where software systems are modeled as graphs of interconnected entities and relationships. Third, it incorporates Large Language Models to capture business semantics embedded in source code, documentation, and naming conventions. By integrating these research directions into a unified framework, this study addresses the limitations of existing structural-only decomposition approaches and provides a more comprehensive solution for microservice boundary identification.
+
+Các tài li?u tham kh?o t?i thi?u nên có
+1.
+2.Building Microservices
+3.Microservices Patterns
+4.Microservices Patterns – Chris Richardson
+5.Domain-Driven Design – Eric Evans
+6.Graph Convolutional Networks
+7.Relational Graph Convolutional Networks
+8.GPT-4 Technical Report
+9.
+N?u h?i d?ng h?i: "Ð? tài c?a em m?i ? dâu?", câu tr? l?i ng?n g?n là:
+Ð? tài k? th?a research gap t? Hassan et al. (2024) và d? xu?t m?t framework tích h?p HSKG + GNN + LLM d? k?t h?p c? thông tin c?u trúc và ng? nghia trong quá trình xác d?nh ranh gi?i microservice, thay vì ch? s? d?ng các k? thu?t phân c?m d?a trên c?u trúc nhu các nghiên c?u tru?c.
+Ðu?c. N?u b?n dang làm theo c?u trúc:
+1.Research Questions
+2.Literature Review
+3.Hypotheses
+4.Methodology
+5.Data Sources
+6.Expected Results
+thì m?i ph?n c?n có ngu?n ch?ng minh riêng, thay vì ch? d? m?t danh sách tài li?u tham kh?o chung. Ðây là cách trích ngu?n phù h?p cho t?ng ph?n.
+
+Lý do vì sao ch?n
+Ðúng. Ðây là di?m mà r?t nhi?u d? cuong b? gi?ng viên ph?n bi?n.
+N?u ch? ghi:
+Hassan et al. (2024)
+thì gi?ng viên s? h?i:
+"T?i sao em ch?n paper này?"
+"Nó ch?ng minh du?c di?u gì cho d? tài c?a em?"
+"Nó liên quan tr?c ti?p d?n Research Question hay ch? là ngu?n tham kh?o chung?"
+
+Cách trình bày dúng
+M?i ngu?n nên có 3 ph?n:
+Source	Why Selected	Supports
+Hassan et al. (2024)	SLR m?i nh?t v? Monolith ? Microservices Migration	Research Problem, Research Gap
+Lewis & Fowler (2014)	Ngu?n g?c d?nh nghia Microservices	Background Theory
+Mazlami et al. (2017)	Nghiên c?u decomposition kinh di?n	Baseline Methods
+Kipf & Welling (2017)	Paper g?c c?a GCN	GNN Foundation
+Hou et al. (2024)	Survey m?i nh?t v? LLM for Software Engineering	Semantic Intelligence
+
+1. Research Questions
+Hassan et al. (2024)
+Link
+https://www.researchgate.net/publication/385377208_Migrating_from_Monolithic_to_Microservice_Architectures_A_Systematic_Literature_Review
+Why Selected
+Ðây là Systematic Literature Review (SLR) m?i, t?ng h?p nhi?u nghiên c?u v? migration t? Monolithic sang Microservices.
+Supports
+?Ch?ng minh migration sang Microservices là xu hu?ng hi?n nay.
+?Ch?ng minh Service Boundary Identification là thách th?c l?n.
+?Ch?ng minh da s? nghiên c?u hi?n nay d?a trên structural analysis.
+?Ch?ng minh còn t?n t?i research gap v? semantic analysis.
+Used In
+?Research Background
+?Research Questions
+?Research Gap
+?Expected Results
+
+Lewis & Fowler (2014)
+Link
+https://martinfowler.com/articles/microservices.html
+Why Selected
+Ðây là tài li?u n?n t?ng d?nh nghia ki?n trúc Microservices.
+Supports
+?Ð?nh nghia Microservice Architecture.
+?Scalability.
+?Independent Deployment.
+?Fault Isolation.
+?Technology Diversity.
+Used In
+?Research Background
+?Literature Review
+
+2. Literature Review
+Dragoni et al. (2017)
+Link
+https://arxiv.org/abs/1704.04173
+Why Selected
+M?t trong nh?ng survey n?i ti?ng nh?t v? Microservice Architecture.
+Supports
+?T?ng quan ki?n trúc Microservices.
+?Migration Challenges.
+?Existing decomposition approaches.
+Used In
+?Literature Review 2.1
+
+Mazlami et al. (2017)
+Link
+https://ieeexplore.ieee.org/document/7927915
+Why Selected
+Là nghiên c?u tiêu bi?u s? d?ng clustering d? xác d?nh service boundaries.
+Supports
+?Structural Decomposition.
+?Service Extraction.
+?Cohesion/Coupling Evaluation.
+Used In
+?Traditional Boundary Identification.
+?Baseline Comparison.
+?Evaluation Metrics.
+
+Levcovitz et al. (2016)
+Link
+https://ieeexplore.ieee.org/document/7774526
+Why Selected
+Ð? xu?t các metrics dánh giá ch?t lu?ng service decomposition.
+Supports
+?Service Quality Metrics.
+?Coupling.
+?Cohesion.
+?Decomposition Evaluation.
+Used In
+?Evaluation Metrics.
+?Expected Results.
+
+Hogan et al. (2021)
+Link
+https://dl.acm.org/doi/10.1145/3447772
+Why Selected
+Là survey chu?n v? Knowledge Graph.
+Supports
+?Knowledge Graph Concepts.
+?Heterogeneous Graph Representation.
+?Multi-source Knowledge Integration.
+Used In
+?HSKG Design.
+?Research Gap 2.
+?Methodology.
+
+Kipf & Welling (2017)
+Link
+https://arxiv.org/abs/1609.02907
+Why Selected
+Paper g?c c?a Graph Convolutional Networks (GCN).
+Supports
+?Graph Representation Learning.
+?Node Embedding.
+?Structural Learning.
+Used In
+?Literature Review.
+?H1.
+?Methodology.
+
+Velickovic et al. (2018)
+Link
+https://openreview.net/forum?id=rJXMpikCZ
+Why Selected
+Paper g?c c?a Graph Attention Network.
+Supports
+?Attention Mechanism.
+?Importance Weighting of Relationships.
+Used In
+?Methodology.
+
+Schlichtkrull et al. (2018)
+Link
+https://arxiv.org/abs/1703.06103
+Why Selected
+Paper g?c c?a Relational Graph Convolutional Networks.
+Supports
+?Heterogeneous Relations.
+?Multi-type Edge Learning.
+Used In
+?HSKG Learning.
+?H1.
+?Methodology.
+
+3. Hypotheses
+Hou et al. (2024)
+Link
+https://arxiv.org/abs/2308.10620
+Why Selected
+Survey m?i nh?t v? ?ng d?ng LLM trong Software Engineering.
+Supports
+?Code Understanding.
+?Documentation Understanding.
+?Semantic Reasoning.
+?Software Analysis.
+Used In
+?H2.
+?H3.
+?Literature Review.
+
+Fan et al. (2023)
+Link
+https://arxiv.org/abs/2312.11470
+Why Selected
+Nghiên c?u v? kh? nang Program Analysis c?a LLMs.
+Supports
+?Semantic Analysis.
+?Business Meaning Extraction.
+?Program Understanding.
+Used In
+?Literature Review.
+?H2.
+
+4. Methodology
+Peffers et al. (2007)
+Link
+https://aisel.aisnet.org/cgi/viewcontent.cgi?article=1024&context=cais
+Why Selected
+Ð? xu?t Design Science Research Methodology (DSR).
+Supports
+?Problem Identification.
+?Artifact Design.
+?Evaluation Process.
+Used In
+?Methodology Framework.
+
+OpenTelemetry
+Link
+https://opentelemetry.io/docs/
+Why Selected
+Chu?n công nghi?p cho distributed tracing.
+Supports
+?Runtime Trace Collection.
+?API Call Monitoring.
+?Dynamic Dependency Extraction.
+Used In
+?Dynamic Analysis.
+
+Eric Evans (2003)
+Link
+https://www.domainlanguage.com/ddd/
+Why Selected
+Ngu?n g?c c?a Domain-Driven Design.
+Supports
+?Bounded Context.
+?Domain Alignment.
+?Business Validation.
+Used In
+?Domain Validation Layer.
+?Business Metrics.
+
+5. Data Sources
+Spring PetClinic
+Link
+https://github.com/spring-projects/spring-petclinic
+Why Selected
+?Benchmark ph? bi?n.
+?Ki?n trúc Monolithic rõ ràng.
+?Ðu?c s? d?ng nhi?u trong nghiên c?u decomposition.
+
+CargoTracker
+Link
+https://github.com/eclipse-ee4j/cargotracker
+Why Selected
+?Ðu?c xây d?ng theo Domain-Driven Design.
+?Có Bounded Context rõ ràng.
+Supports
+?Ground Truth Validation.
+
+6. Expected Results
+Why these references support the expected results
+Mazlami et al. (2017)
+Dùng d? ch?ng minh:
+?Cohesion.
+?Coupling.
+?Structural Quality.
+Levcovitz et al. (2016)
+Dùng d? ch?ng minh:
+?Decomposition Quality Metrics.
+Hou et al. (2024)
+Dùng d? ch?ng minh:
+?Semantic Consistency.
+Evans (2003)
+Dùng d? ch?ng minh:
+?Business-Domain Alignment.
+Hogan et al. (2021)
+Dùng d? ch?ng minh:
+?Multi-source Knowledge improves system understanding.
+Hassan et al. (2024)
+Dùng d? ch?ng minh:
+?Existing decomposition limitations.
+?Nhu c?u c?a m?t hybrid AI framework.
+
+N?u dua ph?n "Why Selected / Supports / Used In" này vào proposal thì khi b?o v?, b?n không ch? có ngu?n d?n ch?ng mà còn ch?ng minh du?c lý do khoa h?c t?i sao t?ng ngu?n du?c ch?n, di?u mà gi?ng viên thu?ng dánh giá r?t cao.
+

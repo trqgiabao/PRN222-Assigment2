@@ -1,0 +1,59 @@
+@page
+@model EduAI.Web.Pages.Study.MaterialsModel
+@{ ViewData["Title"] = "Tài liệu học tập"; }
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">@Model.ViewModel.SubjectName</h1>
+        <p class="page-subtitle">Tải tài liệu do giáo viên upload cho môn này.</p>
+    </div>
+    <a asp-page="/Subjects/Index" class="btn btn-outline-secondary">← Môn học</a>
+</div>
+
+@if (Model.ViewModel.Documents.Count == 0)
+{
+    <div class="alert alert-secondary">Chưa có tài liệu để tải.</div>
+}
+else
+{
+    <div class="panel-card">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Chương</th>
+                        <th>Loại</th>
+                        <th>Dung lượng</th>
+                        <th>Ngày upload</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var doc in Model.ViewModel.Documents)
+                {
+                    <tr>
+                        <td><strong>@doc.FileName</strong></td>
+                        <td>@doc.ChapterName</td>
+                        <td><span class="badge badge-doc">@doc.FileType</span></td>
+                        <td class="text-muted">@FormatFileSize(doc.FileSizeBytes)</td>
+                        <td class="text-muted">@doc.CreatedAt.ToString("g")</td>
+                        <td>
+                            <a asp-page="/Study/Download" asp-route-id="@doc.Id" class="btn btn-sm btn-primary">Download</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@functions {
+    private static string FormatFileSize(long bytes)
+    {
+        if (bytes < 1024) return $"{bytes} B";
+        if (bytes < 1024 * 1024) return $"{bytes / 1024.0:0.#} KB";
+        return $"{bytes / (1024.0 * 1024.0):0.#} MB";
+    }
+}

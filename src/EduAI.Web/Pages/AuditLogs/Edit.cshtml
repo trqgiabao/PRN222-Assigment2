@@ -1,0 +1,22 @@
+@page "{id:int}"
+@model EduAI.Web.Pages.AuditLogs.EditModel
+@{ ViewData["Title"] = "Sửa nhật ký"; }
+
+<h2>Sửa nhật ký #@Model.Input.Id</h2>
+<form method="post" class="card p-3">
+    <input type="hidden" asp-for="Input.Id" />
+    <div class="mb-3">
+        <label asp-for="Input.Action" class="form-label"></label>
+        <input asp-for="Input.Action" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.IpAddress" class="form-label"></label>
+        <input asp-for="Input.IpAddress" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Details" class="form-label"></label>
+        <textarea asp-for="Input.Details" class="form-control" rows="5"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    <a asp-page="Details" asp-route-id="@Model.Input.Id" class="btn btn-secondary">Hủy</a>
+</form>

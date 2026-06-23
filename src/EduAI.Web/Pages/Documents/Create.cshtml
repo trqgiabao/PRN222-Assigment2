@@ -1,0 +1,166 @@
+@page
+@model EduAI.Web.Pages.Documents.CreateModel
+@{ ViewData["Title"] = "Tải tài liệu"; }
+
+<div>
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Tải tài liệu</h1>
+        </div>
+        <a asp-page="Index" asp-route-subjectId="@Model.Input.SubjectId" class="btn btn-outline-secondary btn-sm">Danh sách tài liệu</a>
+    </div>
+
+    @if (Model.NoSubjectsAvailable)
+    {
+        <div class="alert alert-warning">
+            Chưa có môn học nào.
+            @if (User.IsInRole(Roles.Admin))
+            {
+                <a asp-page="/Subjects/Create" class="alert-link">Tạo môn học mới</a>
+            }
+            else
+            {
+                <span>Liên hệ quản trị viên để được gán môn học.</span>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="upload-hub-card">
+                    <div class="upload-hub-card-header">
+                        <span class="upload-hub-icon">i</span>
+                        Thông tin tài liệu
+                    </div>
+                    <div class="upload-hub-card-body">
+                        <form method="post" enctype="multipart/form-data" id="upload-form">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                            <div class="upload-dropzone mb-4" id="dropzone">
+                                <input type="file" name="UploadFile" id="file-input" class="upload-file-input" accept=".pdf,.docx,.pptx,.txt" required />
+                                <div class="upload-dropzone-content">
+                                    <div class="upload-cloud-icon">&#8682;</div>
+                                    <p class="mb-1">Kéo &amp; thả file vào đây, hoặc click để chọn</p>
+                                    <p class="upload-formats mb-2">PDF, Word (.docx), PowerPoint (.pptx), TXT</p>
+                                    <span class="btn btn-sm btn-outline-light">Chọn file</span>
+                                    <p class="upload-file-name mt-2 mb-0" id="file-name">Chưa chọn file (tối đa @Model.MaxUploadMb MB)</p>
+                                </div>
+                            </div>
+
+                            <div class="upload-section-label">MÔN HỌC</div>
+                            <div class="mb-4">
+                                <label asp-for="Input.SubjectId" class="form-label text-muted small">Môn học</label>
+                                <select asp-for="Input.SubjectId" asp-items="Model.SubjectOptions" class="form-select upload-select" id="subject-select"></select>
+                            </div>
+
+                            <div class="upload-section-label">CHƯƠNG</div>
+
+                            <div class="mb-3">
+                                <label asp-for="Input.ChapterId" class="form-label text-muted small">Chương có sẵn (chưa có file)</label>
+                                <select asp-for="Input.ChapterId" asp-items="Model.ChapterOptions" class="form-select upload-select" id="chapter-select"></select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label asp-for="Input.NewChapterName" class="form-label text-muted small">Hoặc tên chương mới</label>
+                                <input asp-for="Input.NewChapterName" class="form-control upload-input" placeholder="VD: Chương 3 - Xử lý ngôn ngữ tự nhiên" />
+                                <span asp-validation-for="Input.NewChapterName" class="text-danger"></span>
+                            </div>
+
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button type="submit" class="btn btn-upload-primary" id="submit-btn">
+                                    &#8682; Tải lên &amp; xử lý
+                                </button>
+                                <a asp-page="/Subjects/Index" class="btn btn-upload-secondary">&#8592; Quay lại môn học</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="upload-guide-card">
+                    <div class="upload-guide-header">Hướng dẫn</div>
+                    <ol class="upload-guide-list">
+                        <li>Chọn file PDF, Word hoặc Slide từ máy tính.</li>
+                        <li>Chọn môn học được phân công.</li>
+                        <li>Chọn chương trống <strong>hoặc</strong> nhập tên chương mới.</li>
+                        <li>Nhấn <strong>Tải lên &amp; xử lý</strong>.</li>
+                        <li>Sau khi trạng thái <strong>đã tải nội dung thành công</strong>, sinh viên có thể chat và tải tài liệu.</li>
+                    </ol>
+                    <div class="upload-guide-tags">
+                        <span>PDF</span><span>DOCX</span><span>PPTX</span><span>TXT</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const subjectSelect = document.getElementById('subject-select');
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('file-input');
+            const fileName = document.getElementById('file-name');
+            const chapterSelect = document.getElementById('chapter-select');
+            const newChapterInput = document.querySelector('[name="Input.NewChapterName"]');
+            const form = document.getElementById('upload-form');
+            const submitBtn = document.getElementById('submit-btn');
+
+            subjectSelect?.addEventListener('change', function () {
+                const id = this.value;
+                if (id) window.location.href = '?subjectId=' + id;
+            });
+
+            function showFile(file) {
+                if (!file || !fileName) return;
+                const mb = (file.size / (1024 * 1024)).toFixed(2);
+                fileName.textContent = file.name + ' (' + mb + ' MB)';
+            }
+
+            dropzone?.addEventListener('click', function (e) {
+                if (e.target.tagName !== 'INPUT') fileInput?.click();
+            });
+
+            fileInput?.addEventListener('change', function () {
+                if (this.files?.[0]) showFile(this.files[0]);
+            });
+
+            dropzone?.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                dropzone.classList.add('drag-over');
+            });
+
+            dropzone?.addEventListener('dragleave', function () {
+                dropzone.classList.remove('drag-over');
+            });
+
+            dropzone?.addEventListener('drop', function (e) {
+                e.preventDefault();
+                dropzone.classList.remove('drag-over');
+                if (e.dataTransfer.files?.length && fileInput) {
+                    fileInput.files = e.dataTransfer.files;
+                    showFile(e.dataTransfer.files[0]);
+                }
+            });
+
+            newChapterInput?.addEventListener('input', function () {
+                if (this.value.trim() && chapterSelect) chapterSelect.value = '0';
+            });
+
+            chapterSelect?.addEventListener('change', function () {
+                if (this.value !== '0' && newChapterInput) newChapterInput.value = '';
+            });
+
+            form?.addEventListener('submit', function () {
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Đang xử lý...';
+                }
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,32 @@
+@page "{id:int}"
+@model EduAI.Web.Pages.Chapters.DetailsModel
+@{ ViewData["Title"] = "Chi tiết chương"; var c = Model.ViewModel.Chapter!; }
+
+<h2>@c.Name</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Môn học</dt><dd class="col-sm-9">@c.SubjectName</dd>
+    <dt class="col-sm-3">Thứ tự</dt><dd class="col-sm-9">@c.OrderNumber</dd>
+    <dt class="col-sm-3">Tài liệu</dt>
+    <dd class="col-sm-9">
+        @if (c.HasDocument && c.DocumentId.HasValue)
+        {
+            <a asp-page="/Documents/Details" asp-route-id="@c.DocumentId" class="btn btn-sm btn-outline-primary">Xem tài liệu</a>
+            <a asp-page="/Documents/Details" asp-route-id="@c.DocumentId" asp-route-showChunks="true" class="badge bg-primary text-decoration-none ms-2">@c.ChunkCount đoạn</a>
+        }
+        else
+        {
+            <span>Chưa có tài liệu</span>
+        }
+    </dd>
+</dl>
+
+@if (!c.HasDocument)
+{
+    <a asp-page="/Documents/Create" asp-route-subjectId="@c.SubjectId" asp-route-chapterId="@c.Id" class="btn btn-success">Tải tài liệu</a>
+}
+
+<div class="d-flex gap-2 mt-3">
+    <a asp-page="Edit" asp-route-id="@c.Id" class="btn btn-primary">Sửa</a>
+    <a asp-page="Index" asp-route-subjectId="@c.SubjectId" class="btn btn-secondary">Quay lại</a>
+</div>

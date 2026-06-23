@@ -1,0 +1,74 @@
+@page "{id:int}"
+
+@model EduAI.Web.Pages.Subjects.EditModel
+
+@{ ViewData["Title"] = "Sửa môn học"; }
+
+<h2>Sửa môn học</h2>
+
+<form method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="Input.Id" />
+
+    <div class="mb-3">
+
+        <label asp-for="Input.Name" class="form-label"></label>
+
+        <input asp-for="Input.Name" class="form-control" />
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="Input.Description" class="form-label"></label>
+
+        <textarea asp-for="Input.Description" class="form-control"></textarea>
+
+    </div>
+
+    @if (Model.IsTeacherLocked)
+
+    {
+
+        <div class="mb-3">
+
+            <label class="form-label">Giáo viên phụ trách</label>
+
+            <p class="form-control-plaintext fw-semibold mb-1">@Model.CurrentTeacherName</p>
+
+            <div class="form-text">Mỗi môn chỉ có một giáo viên. Phiên bản demo chưa hỗ trợ đổi hoặc gỡ giáo viên sau khi đã gán.</div>
+
+            <input type="hidden" asp-for="Input.TeacherId" />
+
+        </div>
+
+    }
+
+    else
+
+    {
+
+        <div class="mb-3">
+
+            <label asp-for="Input.TeacherId" class="form-label">Gán giáo viên</label>
+
+            <select asp-for="Input.TeacherId" asp-items="Model.TeacherOptions" class="form-select">
+
+                <option value="">-- Chưa gán --</option>
+
+            </select>
+
+            <div class="form-text">Mỗi môn chỉ gán một giáo viên (chỉ gán một lần). Một giáo viên có thể phụ trách nhiều môn.</div>
+
+        </div>
+
+    }
+
+    <button type="submit" class="btn btn-primary">Lưu</button>
+
+    <a asp-page="Index" class="btn btn-secondary">Hủy</a>
+
+</form>
+

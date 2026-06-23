@@ -1,0 +1,211 @@
+@page "{id:int}"
+@model EduAI.Web.Pages.Subjects.DetailsModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Chi tiết môn";
+    var s = Model.ViewModel.Subject!;
+    var role = User.IsInRole(Roles.Admin) ? Roles.Admin
+        : User.IsInRole(Roles.Teacher) ? Roles.Teacher
+        : Roles.Student;
+    var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">@s.Name</h1>
+        <p class="page-subtitle">
+            @(s.TeacherName != null ? $"GV: {s.TeacherName}" : "Chưa gán giáo viên")
+            @if (User.IsInRole(Roles.Admin) && !s.IsActive)
+            {
+                <span class="badge bg-secondary ms-2">Đã ẩn</span>
+            }
+        </p>
+    </div>
+    <a asp-page="Index" class="btn btn-outline-secondary">← Danh sách</a>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+
+<div class="panel-card mb-4">
+    <div class="panel-card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3 text-muted">Mô tả</dt>
+            <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(s.Description) ? "—" : s.Description)</dd>
+            <dt class="col-sm-3 text-muted">Tài liệu</dt>
+            <dd class="col-sm-9"><span class="badge badge-doc">@s.DocumentCount</span></dd>
+            <dt class="col-sm-3 text-muted">Tạo lúc</dt>
+            <dd class="col-sm-9">@s.CreatedAt.ToString("g")</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel-card mb-4">
+    <div class="panel-card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <strong>Tài liệu</strong>
+            <span class="text-muted ms-2">(@Model.Documents.Count)</span>
+        </div>
+        @if ((User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Teacher)) && s.IsActive)
+        {
+            <a asp-page="/Documents/Create" asp-route-subjectId="@s.Id" class="btn btn-sm btn-primary">+ Tải lên</a>
+        }
+    </div>
+    <div class="panel-card-body p-0">
+        @if (Model.Documents.Count == 0)
+        {
+            <div class="p-3 text-muted">Chưa có tài liệu nào.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 drive-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 44px;"></th>
+                            <th>Tên tài liệu</th>
+                            <th>Chương</th>
+                            <th>Trạng thái</th>
+                            @if (!User.IsInRole(Roles.Student))
+                            {
+                                <th>chunk</th>
+                            }
+                            <th class="text-end" style="width: 220px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var doc in Model.Documents)
+                        {
+                            var isExpanded = Model.ExpandedDocumentId == doc.Id;
+                            var ext = System.IO.Path.GetExtension(doc.FileName ?? string.Empty).ToLowerInvariant();
+                            var icon = ext switch
+                            {
+                                ".pdf" => "PDF",
+                                ".doc" or ".docx" => "DOC",
+                                ".ppt" or ".pptx" => "PPT",
+                                ".xls" or ".xlsx" => "XLS",
+                                ".txt" => "TXT",
+                                _ => "FILE"
+                            };
+
+                            <tr>
+                                <td class="text-center">
+                                    <span class="drive-icon">@icon</span>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold">@doc.FileName</div>
+                                    <div class="text-muted small">Tải lên: @doc.CreatedAt.ToLocalTime().ToString("g")</div>
+                                </td>
+                                <td class="text-muted">@doc.ChapterName</td>
+                                <td>
+                                    <span class="badge @(doc.IndexStatus == "Indexed" ? "status-indexed" : doc.IndexStatus == "Processing" ? "status-processing" : "status-pending")">
+                                        @(doc.IndexStatus == "Indexed" ? "✓ đã tải nội dung thành công" : doc.IndexStatus == "Processing" ? "Đang xử lý" : doc.IndexStatus == "Pending" ? "Chờ xử lý" : doc.IndexStatus)
+                                    </span>
+                                </td>
+                                @if (!User.IsInRole(Roles.Student))
+                                {
+                                    <td>
+                                        @if (doc.ChunkCount > 0)
+                                        {
+                                            if (isExpanded)
+                                            {
+                                                <a asp-page="Details" asp-route-id="@s.Id" class="badge badge-chunk badge-chunk-link text-decoration-none">chunk @doc.ChunkCount ▲</a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-page="Details" asp-route-id="@s.Id" asp-route-showChunks="@doc.Id" class="badge badge-chunk badge-chunk-link text-decoration-none">chunk @doc.ChunkCount ▼</a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">chunk 0</span>
+                                        }
+                                    </td>
+                                }
+                                <td class="text-end text-nowrap">
+                                    <a asp-page="/Documents/Details" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-primary">Mở</a>
+                                    @if ((User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Teacher)) && s.IsActive)
+                                    {
+                                        <a asp-page="/Documents/Edit" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-secondary">Sửa</a>
+                                    }
+                                </td>
+                            </tr>
+                            @if (isExpanded && !User.IsInRole(Roles.Student))
+                            {
+                                <tr class="chunk-expand-row">
+                                    <td colspan="@(User.IsInRole(Roles.Student) ? 5 : 6)">
+                                        <div class="chunk-inline-panel">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <strong>chunk — @doc.FileName (@Model.ExpandedChunks.Count)</strong>
+                                                <a asp-page="Details" asp-route-id="@s.Id" class="btn btn-sm btn-outline-secondary">Đóng</a>
+                                            </div>
+                                            @{
+                                                var chunkAccordionId = "subject-doc-chunks-" + doc.Id;
+                                            }
+                                            <partial name="_ChunkAccordion" model="(Model.ExpandedChunks, chunkAccordionId, Model.ShowEmbedding)" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="d-flex flex-wrap gap-2">
+    @if (User.IsInRole(Roles.Admin))
+    {
+        @if (s.IsActive)
+        {
+            <a asp-page="Edit" asp-route-id="@s.Id" class="btn btn-primary">Sửa / Gán GV</a>
+            <form method="post" asp-page-handler="Deactivate" class="d-inline" onsubmit="return confirm('Ẩn môn này? Môn sẽ không còn hiển thị với giáo viên và sinh viên.');">
+                <input type="hidden" name="id" value="@s.Id" />
+                <button type="submit" class="btn btn-outline-warning">Ẩn môn</button>
+            </form>
+        }
+        else
+        {
+            <form method="post" asp-page-handler="Restore" class="d-inline" onsubmit="return confirm('Hiện lại môn này?');">
+                <input type="hidden" name="id" value="@s.Id" />
+                <button type="submit" class="btn btn-success">Hiện lại môn</button>
+            </form>
+        }
+    }
+    @if ((User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Teacher)) && s.IsActive)
+    {
+        <a asp-page="/Documents/Create" asp-route-subjectId="@s.Id" class="btn btn-primary">Tải lên</a>
+    }
+    @if (User.IsInRole(Roles.Student) && s.HasMaterials)
+    {
+        <a asp-page="/Study/Materials" asp-route-subjectId="@s.Id" class="btn btn-success">Tải tài liệu</a>
+        <a asp-page="/Chat/Create" asp-route-subjectId="@s.Id" class="btn btn-primary">Chat</a>
+    }
+    else if (User.IsInRole(Roles.Student))
+    {
+        <div class="alert alert-warning mb-0 w-100">Chưa có tài liệu cho môn này.</div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/subject-realtime.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const panel = document.querySelector('.chunk-expand-row .chunk-inline-panel');
+            if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+        initSubjectRealtime(@Html.Raw(JsonSerializer.Serialize(new {
+            hubUrl = Url.Content("~/hubs/subjects"),
+            role,
+            userId,
+            currentSubjectId = s.Id,
+            urls = new {
+                index = Url.Page("/Subjects/Index")
+            }
+        })));
+    </script>
+}
