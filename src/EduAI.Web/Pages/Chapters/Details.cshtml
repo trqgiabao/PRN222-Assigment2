@@ -21,7 +21,7 @@
     </dd>
 </dl>
 
-@if (!c.HasDocument)
+@if (!c.HasDocument && User.IsInRole(Roles.Teacher))
 {
     <a asp-page="/Documents/Create" asp-route-subjectId="@c.SubjectId" asp-route-chapterId="@c.Id" class="btn btn-success">Tải tài liệu</a>
 }

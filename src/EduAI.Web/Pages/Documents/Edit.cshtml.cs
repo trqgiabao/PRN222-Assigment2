@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EduAI.Web.Pages.Documents;
 
-[Authorize(Policy = "AdminOrTeacher")]
+[Authorize(Policy = "TeacherOnly")]
 public class EditModel : PageModel
 {
     private readonly IDocumentService _documentService;

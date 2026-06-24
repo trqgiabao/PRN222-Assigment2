@@ -40,6 +40,10 @@ public class DetailsModel : PageModel
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         var role = User.IsInRole(Roles.Admin) ? Roles.Admin : Roles.Teacher;
 
+        // Only teachers can delete documents
+        if (role != Roles.Teacher)
+            return Forbid();
+
         var doc = await _documentService.GetByIdAsync(id, userId, role);
         if (doc == null)
             return NotFound();
