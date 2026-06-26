@@ -1,4 +1,5 @@
 using System.Text;
+using ClosedXML.Excel;
 using EduAI.Model.Constants;
 using EduAI.Model.DTOs;
 using EduAI.Model.Entities;
@@ -171,6 +172,89 @@ public class UserManagementService : IUserManagementService
             TemporaryPassword = passwordWasGenerated ? password : null,
             EmailSent = emailSent
         };
+    }
+
+    public async Task<BulkUserImportResultDto> BulkImportUsersAsync(Stream excelStream, string adminId, string? ipAddress)
+    {
+        var result = new BulkUserImportResultDto();
+
+        using var workbook = new XLWorkbook(excelStream);
+        var worksheet = workbook.Worksheet(1);
+        var range = worksheet.RangeUsed();
+
+        if (range == null)
+        {
+            result.TotalRows = 0;
+            return result;
+        }
+
+        var rows = range.RowsUsed().Skip(1); // Skip header row
+        var rowsList = rows.ToList();
+        result.TotalRows = rowsList.Count;
+
+        foreach (var row in rowsList)
+        {
+            var rowNumber = row.RowNumber();
+            var fullName = row.Cell(1).GetString().Trim();
+            var email = row.Cell(2).GetString().Trim();
+            var role = row.Cell(3).GetString().Trim();
+
+            var rowResult = new BulkUserImportRowResultDto
+            {
+                RowNumber = rowNumber,
+                FullName = fullName,
+                Email = email,
+                Role = role
+            };
+
+            if (string.IsNullOrWhiteSpace(fullName))
+            {
+                rowResult.ErrorMessage = "Full name is required.";
+                result.Results.Add(rowResult);
+                result.FailCount++;
+                continue;
+            }
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                rowResult.ErrorMessage = "Email is required.";
+                result.Results.Add(rowResult);
+                result.FailCount++;
+                continue;
+            }
+
+            if (role is not (Roles.Teacher or Roles.Student))
+            {
+                rowResult.ErrorMessage = $"Invalid role '{role}'. Must be '{Roles.Teacher}' or '{Roles.Student}'.";
+                result.Results.Add(rowResult);
+                result.FailCount++;
+                continue;
+            }
+
+            var createResult = await CreateUserAsync(new CreateUserDto
+            {
+                FullName = fullName,
+                Email = email,
+                UserName = email,
+                Role = role
+            }, adminId, ipAddress);
+
+            if (createResult.Success)
+            {
+                rowResult.Success = true;
+                rowResult.TemporaryPassword = createResult.TemporaryPassword;
+                result.SuccessCount++;
+            }
+            else
+            {
+                rowResult.ErrorMessage = createResult.ErrorMessage;
+                result.FailCount++;
+            }
+
+            result.Results.Add(rowResult);
+        }
+
+        return result;
     }
 
     public async Task<bool> ResendTeacherEmailConfirmationByEmailAsync(string email)
