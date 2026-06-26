@@ -104,7 +104,7 @@
                                 <a asp-page="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-secondary">Sửa</a>
                             }
                         }
-                        @if ((User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Teacher)) && s.IsActive)
+                        @if (User.IsInRole(Roles.Teacher) && s.IsActive)
                         {
                             <a asp-page="/Documents/Create" asp-route-subjectId="@s.Id" class="btn btn-sm btn-primary">Tải lên</a>
                         }

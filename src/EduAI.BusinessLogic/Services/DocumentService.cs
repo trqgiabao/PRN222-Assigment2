@@ -168,8 +168,17 @@ public class DocumentService : IDocumentService
             return new UploadDocumentResultDto { Success = false, ErrorMessage = "Chapter does not belong to the selected subject." };
         }
 
-        if (dto.UploaderRole != Roles.Admin &&
-            !await _subjectService.IsTeacherAssignedToSubjectAsync(dto.UploadedByUserId, dto.SubjectId))
+        // Only teachers can upload documents
+        if (dto.UploaderRole != Roles.Teacher)
+        {
+            return new UploadDocumentResultDto
+            {
+                Success = false,
+                ErrorMessage = "Only teachers are allowed to upload documents."
+            };
+        }
+
+        if (!await _subjectService.IsTeacherAssignedToSubjectAsync(dto.UploadedByUserId, dto.SubjectId))
         {
             return new UploadDocumentResultDto
             {
@@ -267,7 +276,7 @@ public class DocumentService : IDocumentService
         if (role == Roles.Teacher && document.Subject.TeacherId != userId)
             return DocFail("You are not assigned to this subject.");
 
-        if (role != Roles.Admin && role != Roles.Teacher)
+        if (role != Roles.Teacher)
             return DocFail("Access denied.");
 
         if (dto.ChapterId != document.ChapterId)
@@ -328,7 +337,7 @@ public class DocumentService : IDocumentService
         if (role == Roles.Teacher && document.Subject.TeacherId != userId)
             return false;
 
-        if (role != Roles.Admin && role != Roles.Teacher)
+        if (role != Roles.Teacher)
             return false;
 
         var subjectId = document.SubjectId;

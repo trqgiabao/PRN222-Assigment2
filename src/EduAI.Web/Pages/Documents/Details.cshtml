@@ -264,11 +264,14 @@
 
 
 <div class="d-flex gap-2">
-    <a asp-page="Edit" asp-route-id="@d.Id" class="btn btn-primary">Sửa</a>
-    <form method="post" asp-page-handler="Delete" class="d-inline">
-        <input type="hidden" name="id" value="@d.Id" />
-        <button type="submit" class="btn btn-danger" onclick="return confirm('Xóa tài liệu và tất cả đoạn văn?')">Xóa</button>
-    </form>
+    @if (User.IsInRole(Roles.Teacher))
+    {
+        <a asp-page="Edit" asp-route-id="@d.Id" class="btn btn-primary">Sửa</a>
+        <form method="post" asp-page-handler="Delete" class="d-inline">
+            <input type="hidden" name="id" value="@d.Id" />
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Xóa tài liệu và tất cả đoạn văn?')">Xóa</button>
+        </form>
+    }
     <a asp-page="Index" asp-route-subjectId="@d.SubjectId" class="btn btn-secondary">Quay lại</a>
 
 </div>

@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 
 namespace EduAI.Web.Pages.Documents;
 
-[Authorize(Policy = "AdminOrTeacher")]
+[Authorize(Policy = "TeacherOnly")]
 public class CreateModel : PageModel
 {
     private readonly IDocumentService _documentService;

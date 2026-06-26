@@ -7,7 +7,10 @@
         <h1 class="page-title">@Model.ViewModel.SubjectName</h1>
     </div>
     <div class="d-flex gap-2">
-        <a asp-page="Create" asp-route-subjectId="@Model.ViewModel.SubjectId" class="btn btn-primary">+ Tải lên</a>
+        @if (User.IsInRole(Roles.Teacher))
+        {
+            <a asp-page="Create" asp-route-subjectId="@Model.ViewModel.SubjectId" class="btn btn-primary">+ Tải lên</a>
+        }
         <a asp-page="/Subjects/Details" asp-route-id="@Model.ViewModel.SubjectId" class="btn btn-outline-secondary">← Môn học</a>
     </div>
 </div>
@@ -16,7 +19,10 @@
 {
     <div class="alert alert-secondary">
         Chưa có tài liệu.
-        <a asp-page="Create" asp-route-subjectId="@Model.ViewModel.SubjectId" class="alert-link">Tải lên ngay</a>
+        @if (User.IsInRole(Roles.Teacher))
+        {
+            <a asp-page="Create" asp-route-subjectId="@Model.ViewModel.SubjectId" class="alert-link">Tải lên ngay</a>
+        }
     </div>
 }
 else
@@ -69,7 +75,10 @@ else
                         <td class="text-nowrap">
                             <a asp-page="/Study/Download" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-success">Tải</a>
                             <a asp-page="Details" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-primary">Chi tiết</a>
-                            <a asp-page="Edit" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-secondary">Sửa</a>
+                            @if (User.IsInRole(Roles.Teacher))
+                            {
+                                <a asp-page="Edit" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-secondary">Sửa</a>
+                            }
                         </td>
                     </tr>
                     @if (isExpanded)
